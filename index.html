@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app"></div>
+    
+</body>
+
+<script>
+    const app = document.getElementById('app')
+    let inputText = "";
+    let vowelCounter = 0;
+    let showingCounter = false;
+    const vowelList = ["a","e","i","o","u","y","æ","ø","å"]
+
+    updateView()
+    function updateView() {
+        app.innerHTML = /*HTML*/`
+        <p>Skriv inn tekst her:</p>
+        <input onchange="takeInput(this.value)">
+        `;
+        if(inputText != ""){
+            app.innerHTML += /*HTML*/`
+            <p>Du skrev inn denne teksten: ${inputText}</p>
+            ${createButtons()}
+            <br>
+            <p>Antall: ${vowelCounter}</p>
+            `;
+        }
+    }
+
+    function createButtons(){
+        buttonsHTML = "";
+        for (let i = 0; i < vowelList.length; i++) {
+            const element = vowelList[i];
+            buttonsHTML += "<button onclick='highlightLetters(this.innerHTML)'>" + element + "</button>";
+        }
+        return buttonsHTML;
+    }
+
+    function takeInput(input){
+        inputText = input;
+        vowelCounter = 0;
+        showingCounter = false;
+        updateView()
+    }
+
+    function highlightLetters(letter){
+        let counter = 0;
+        let splitText = inputText.split('');
+        const upperCaseLetter = letter.toUpperCase();
+        for (let i = 0; i < splitText.length; i++) {
+            if(letter == splitText[i]){
+                counter++;
+                splitText[i] = `<u><b>` + letter + `</b></u>`
+            }
+            else if(upperCaseLetter == splitText[i]){
+                counter++;
+                splitText[i] = `<u><b>` + upperCaseLetter + `</b></u>`
+            }
+        }
+        inputText = splitText.join('');
+        showingCounter = true;
+        vowelCounter = counter;
+        updateView()
+    }
+
+
+
+</script>
+</html>
+
